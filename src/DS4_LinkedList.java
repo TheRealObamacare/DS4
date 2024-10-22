@@ -109,7 +109,7 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
         for (int i = 0; i < x - 1; i++) {
             temp = temp.getNext();
         }
-        DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<E>(data);
+        DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<>(data);
         newNode.setNext(temp.getNext());
         temp.setNext(newNode);
     }
