@@ -5,10 +5,12 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     public DS4_LinkedList(E data)
     {
         listNode = new DS4_LinkedList_Node<E>(data);
+        lastNode = new DS4_LinkedList_Node<>(data);
     }
     public DS4_LinkedList()
     {
         listNode = null;
+        lastNode = null;
     }
     public DS4_LinkedList_Node<E> getFirstNode()
     {
@@ -29,6 +31,14 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     }
     public E getLast()
     {
+        if(size() == 0)
+        {
+            return null;
+        }
+        else if(size() == 1)
+        {
+            return get(0);
+        }
         return get(size()-1);
     }
     public E removeFirst()
@@ -88,9 +98,15 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     }
     public void add(int x, E data)
     {
+        if (x < 0 || x > size()) {
+            throw new IndexOutOfBoundsException("Index: " + x + ", Size: " + size());
+        }
+        if (x == 0) {
+            addFirst(data);
+            return;
+        }
         DS4_LinkedList_Node<E> temp = listNode;
-        for(int i = 0; i < x; i++)
-        {
+        for (int i = 0; i < x - 1; i++) {
             temp = temp.getNext();
         }
         DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<E>(data);
