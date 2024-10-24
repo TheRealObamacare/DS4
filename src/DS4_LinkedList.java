@@ -4,7 +4,7 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     private DS4_LinkedList_Node<E> lastNode;
     public DS4_LinkedList(E data)
     {
-        listNode = new DS4_LinkedList_Node<E>(data);
+        listNode = new DS4_LinkedList_Node<>(data);
         lastNode = new DS4_LinkedList_Node<>(data);
     }
     public DS4_LinkedList()
@@ -51,14 +51,14 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     }
     public void addFirst(E data)
     {
-        DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<E>(data);
+        DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<>(data);
         newNode.setNext(listNode);
         listNode = newNode;
     }
 
     public void addLast(E data)
     {
-        DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<E>(data);
+        DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<>(data);
         if(listNode == null)
         {
             listNode = newNode;
