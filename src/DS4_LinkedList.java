@@ -51,6 +51,10 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     }
     public void addFirst(E data)
     {
+        if (listNode == null) {
+            listNode = new DS4_LinkedList_Node<>(data);
+            return;
+        }
         DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<>(data);
         newNode.setNext(listNode);
         listNode = newNode;
@@ -76,7 +80,7 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     public void clear()
     {
         listNode = null;
-
+        lastNode = null;
     }
     public int size()
     {
