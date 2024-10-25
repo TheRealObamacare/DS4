@@ -49,6 +49,9 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     }
     public E removeLast()
     {
+        if (lastNode == null) {
+            return null;
+        }
         DS4_LinkedList_Node<E> temp = listNode;
         DS4_LinkedList_Node<E> temp1 = listNode;
         for(int i = 0; i < size(); i++)
@@ -138,7 +141,7 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
         {
             DS4_LinkedList_Node<E> temp = listNode.getNext();
             DS4_LinkedList_Node<E> temp1 = listNode;
-            for(int i = 0; i < x; i++)
+            for(int i = 0; i < x-1; i++)
             {
                 temp = temp.getNext();
                 temp1 = temp1.getNext();

@@ -789,6 +789,7 @@ public class DS4_LinkedList_Tests
                     correct.add(0,thingsToAdd.get(x));
                 }
                 String message = "Called addFirst multiples using these values:"+thingsToAdd;
+                System.out.print(toString.invoke(check));
                 int index = (int)(Math.random()*correct.size());
                 Assert.assertEquals(message,correct.remove(index),remove.invoke(check,index));
                 message += ", and then calling remove("+index+")";
