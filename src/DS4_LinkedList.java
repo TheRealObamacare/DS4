@@ -1,103 +1,96 @@
 public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
 {
-    private DS4_LinkedList_Node<E> listNode;
+    private DS4_LinkedList_Node<E> firstNode;
     private DS4_LinkedList_Node<E> lastNode;
     public DS4_LinkedList(E data)
     {
-        listNode = new DS4_LinkedList_Node<>(data);
-        lastNode = new DS4_LinkedList_Node<>(data);
+        lastNode = firstNode = new DS4_LinkedList_Node<>(data);
     }
     public DS4_LinkedList()
     {
-        listNode = null;
-        lastNode = null;
+        lastNode = firstNode = null;
     }
     public DS4_LinkedList_Node<E> getFirstNode()
     {
-        return listNode;
+        return firstNode;
     }
     public DS4_LinkedList_Node<E> getLastNode()
     {
-        DS4_LinkedList_Node<E> temp = listNode;
-        while(temp.getNext() != null)
-        {
-            temp = temp.getNext();
-        }
-        return temp;
+        return lastNode;
     }
     public E getFirst()
     {
-        return listNode.getData();
+        return firstNode.getData();
     }
     public E getLast()
     {
-        if(size() == 0)
-        {
-            return null;
-        }
-        else if(size() == 1)
-        {
-            return get(0);
-        }
-        return get(size()-1);
+        return lastNode.getData();
     }
     public E removeFirst()
     {
-        DS4_LinkedList_Node<E> temp = listNode;
-        listNode = listNode.getNext();
+        if (firstNode == lastNode) {
+            E oldData = firstNode.getData();
+            lastNode = firstNode = null;
+            return oldData;
+        }
+        DS4_LinkedList_Node<E> temp = firstNode;
+        firstNode = firstNode.getNext();
         return temp.getData();
     }
     public E removeLast()
     {
-        if (lastNode == null) {
-            return null;
+        if (firstNode == lastNode) {
+            E oldData = lastNode.getData();
+            lastNode = firstNode = null;
+            return oldData;
         }
-        DS4_LinkedList_Node<E> temp = listNode;
-        DS4_LinkedList_Node<E> temp1 = listNode;
-        for(int i = 0; i < size(); i++)
+        DS4_LinkedList_Node<E> temp = firstNode;
+        while(temp.getNext() != lastNode)
         {
             temp = temp.getNext();
-            temp1 = temp1.getNext();
         }
-        temp1.setNext(temp.getNext());
-        return temp.getData();
+        E oldData = lastNode.getData();
+        lastNode = temp;
+        lastNode.setNext(null);
+        return oldData;
     }
     public void addFirst(E data)
     {
-        if (listNode == null) {
-            listNode = new DS4_LinkedList_Node<>(data);
+        if (firstNode == null)
+        {
+            firstNode = new DS4_LinkedList_Node<>(data);
+            lastNode = firstNode;
             return;
         }
         DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<>(data);
-        newNode.setNext(listNode);
-        listNode = newNode;
+        newNode.setNext(firstNode);
+        firstNode = newNode;
     }
 
     public void addLast(E data)
     {
+
         DS4_LinkedList_Node<E> newNode = new DS4_LinkedList_Node<>(data);
-        if(listNode == null)
+        if(isEmpty())
         {
-            listNode = newNode;
+            firstNode = newNode;
+            lastNode = firstNode;
         }
         else
         {
-            DS4_LinkedList_Node<E> temp = listNode;
-            while(temp.getNext() != null)
-            {
-                temp = temp.getNext();
-            }
-            temp.setNext(newNode);
+            DS4_LinkedList_Node<E> temp = lastNode;
+            lastNode = newNode;
+            temp.setNext(lastNode);
         }
     }
     public void clear()
     {
-        listNode = null;
+        firstNode = null;
         lastNode = null;
     }
     public int size()
     {
-        DS4_LinkedList_Node<E> temp = listNode;
+        DS4_LinkedList_Node<E> temp = firstNode;
         int count = 0;
         while(temp != null)
         {
@@ -108,7 +101,7 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     }
     public E get(int x)
     {
-        DS4_LinkedList_Node<E> temp = listNode;
+        DS4_LinkedList_Node<E> temp = firstNode;
         for(int i = 0; i < x; i++)
         {
             temp = temp.getNext();
@@ -121,7 +114,11 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
             addFirst(data);
             return;
         }
-        DS4_LinkedList_Node<E> temp = listNode;
+        else if (x == size()) {
+            addLast(data);
+            return;
+        }
+        DS4_LinkedList_Node<E> temp = firstNode;
         for (int i = 0; i < x - 1; i++) {
             temp = temp.getNext();
         }
@@ -139,8 +136,8 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
         }
         else
         {
-            DS4_LinkedList_Node<E> temp = listNode.getNext();
-            DS4_LinkedList_Node<E> temp1 = listNode;
+            DS4_LinkedList_Node<E> temp = firstNode.getNext();
+            DS4_LinkedList_Node<E> temp1 = firstNode;
             for(int i = 0; i < x-1; i++)
             {
                 temp = temp.getNext();
@@ -153,7 +150,7 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     }
     public E set(int x, E data)
     {
-        DS4_LinkedList_Node<E> temp = listNode;
+        DS4_LinkedList_Node<E> temp = firstNode;
         for(int i = 0; i < x; i++)
         {
             temp = temp.getNext();
@@ -164,13 +161,12 @@ public class DS4_LinkedList<E> implements DS4_LinkedList_Interface<E>
     }
     public boolean isEmpty()
     {
-        return listNode == null && lastNode == null;
+        return firstNode == null && lastNode == null;
     }
     public String toString()
     {
-        DS4_LinkedList_Node<E> temp = listNode;
+        DS4_LinkedList_Node<E> temp = firstNode;
         String result = "[";
-        DS4_LinkedList_Node<E> lastNode = getLastNode();
         while(temp != null)
         {
             result += temp.getData();
