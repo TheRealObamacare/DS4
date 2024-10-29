@@ -36,9 +36,10 @@ public class DS4_Doubly_Circular_LinkedList<E>  implements DS4_Doubly_Circular_L
 
     public E removeFirst()
     {
-        if (firstNode == lastNode) {
+        if (firstNode == lastNode)
+        {
             E oldData = firstNode.getData();
-            lastNode = firstNode = null;
+            clear();
             return oldData;
         }
         DS4_Doubly_Circular_LinkedList_Node<E> temp = firstNode;
@@ -48,7 +49,8 @@ public class DS4_Doubly_Circular_LinkedList<E>  implements DS4_Doubly_Circular_L
         return temp.getData();
     }
 
-    public E removeLast(){
+    public E removeLast()
+    {
         if (firstNode == lastNode) {
             E oldData = lastNode.getData();
             lastNode = firstNode = null;
@@ -62,30 +64,37 @@ public class DS4_Doubly_Circular_LinkedList<E>  implements DS4_Doubly_Circular_L
         E oldData = lastNode.getData();
         lastNode = temp;
         lastNode.setNext(firstNode);
+        firstNode.setPrev(lastNode);
         return oldData;
     }
 
     public void addFirst(E data)
     {
+        DS4_Doubly_Circular_LinkedList_Node<E> newNode = new DS4_Doubly_Circular_LinkedList_Node<>(data);
         if (firstNode == null)
         {
-            firstNode = new DS4_Doubly_Circular_LinkedList_Node<>(data);
-            lastNode = firstNode;
-            return;
+            firstNode = lastNode = newNode;
+            firstNode.setNext(firstNode);
+            firstNode.setPrev(firstNode);
         }
-        DS4_Doubly_Circular_LinkedList_Node<E> newNode = new DS4_Doubly_Circular_LinkedList_Node<>(data);
-        newNode.setNext(firstNode);
-        firstNode = newNode;
-        lastNode.setNext(firstNode);
-        firstNode.setPrev(lastNode);
+        else
+        {
+            newNode.setNext(firstNode);
+            newNode.setPrev(lastNode);
+            firstNode.setPrev(newNode);
+            lastNode.setNext(newNode);
+            firstNode = newNode;
+        }
     }
 
     public void addLast(E data)
     {
         DS4_Doubly_Circular_LinkedList_Node<E> newNode = new DS4_Doubly_Circular_LinkedList_Node<>(data);
-        if(isEmpty())
+        if(lastNode == null)
         {
             lastNode = firstNode = newNode;
+            firstNode.setNext(firstNode);
+            firstNode.setPrev(firstNode);
         }
         else
         {
@@ -95,28 +104,27 @@ public class DS4_Doubly_Circular_LinkedList<E>  implements DS4_Doubly_Circular_L
             lastNode.setPrev(temp);
             lastNode.setNext(firstNode);
             firstNode.setPrev(lastNode);
+            firstNode.setNext(firstNode.getNext());
         }
     }
 
     public void clear()
     {
-        firstNode = null;
-        lastNode = null;
+        lastNode = firstNode = null;
     }
 
     public int size()
     {
-        if (isEmpty())
-        {
+        if (isEmpty()) {
             return 0;
         }
-        int count = 1;
         DS4_Doubly_Circular_LinkedList_Node<E> temp = firstNode;
-        while(temp.getNext() != firstNode)
+        int count = 0;
+        do
         {
             count++;
             temp = temp.getNext();
-        }
+        } while(temp != firstNode);
         return count;
     }
 
@@ -159,20 +167,14 @@ public class DS4_Doubly_Circular_LinkedList<E>  implements DS4_Doubly_Circular_L
         else if (x == size() - 1) {
             return removeLast();
         }
-        else
-        {
-            DS4_Doubly_Circular_LinkedList_Node<E> temp = firstNode.getNext();
-            DS4_Doubly_Circular_LinkedList_Node<E> temp1 = firstNode;
-            for(int i = 0; i < x-1; i++)
-            {
-                temp = temp.getNext();
-                temp1 = temp1.getNext();
-            }
-            E oldData = temp.getData();
-            temp1.setNext(temp.getNext());
-            temp.getNext().setPrev(temp1);
-            return oldData;
+        DS4_Doubly_Circular_LinkedList_Node<E> temp = firstNode;
+        for (int i = 0; i < x - 1; i++) {
+            temp = temp.getNext();
         }
+        E oldData = temp.getNext().getData();
+        temp.setNext(temp.getNext().getNext());
+        temp.getNext().setPrev(temp);
+        return oldData;
     }
 
     public E set(int x, E data)
@@ -194,6 +196,9 @@ public class DS4_Doubly_Circular_LinkedList<E>  implements DS4_Doubly_Circular_L
 
     public String backwardsToString()
     {
+        if (isEmpty()) {
+            return "[]";
+        }
         DS4_Doubly_Circular_LinkedList_Node<E> temp = lastNode;
         String result = "[";
         while(temp != firstNode)
@@ -206,6 +211,9 @@ public class DS4_Doubly_Circular_LinkedList<E>  implements DS4_Doubly_Circular_L
     }
     public String toString()
     {
+        if (isEmpty()) {
+            return "[]";
+        }
         DS4_Doubly_Circular_LinkedList_Node<E> temp = firstNode;
         String result = "[";
         while(temp != lastNode)
