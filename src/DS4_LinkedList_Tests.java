@@ -69,6 +69,33 @@ public class DS4_LinkedList_Tests
     }
 
     @Test(timeout = 250)
+    public void arrayCheck() throws Exception{
+        String className = "DS4_Doubly_Circular_LinkedList";
+        String fileName = "src/"+generateClassName(className).replaceAll("\\.","/")+".java";
+        boolean allowedOnly = true;
+        ArrayList<String> invalidImport = new ArrayList<>();
+        try
+        {
+            File file = new File(fileName);
+            Scanner fromFile = new Scanner(file);
+            String allLines="";
+            while(fromFile.hasNextLine())
+            {
+                allLines += fromFile.nextLine().trim();
+
+            }
+            Assert.assertFalse("You code may not include any arrays",allLines.matches(".*[^\\\"]\\[(\\s|\\n)*\\]($|[^\\\"]+).*"));
+        }
+        catch(Exception e)
+        {
+            Assert.assertTrue("Missing File: "+className+".java",false);
+            allowedOnly = false;
+        }
+
+        Assert.assertTrue("Invalid imports: "+invalidImport,allowedOnly);
+    }
+
+    @Test(timeout = 250)
     public void test1() throws Exception {
         try
         {
@@ -789,7 +816,6 @@ public class DS4_LinkedList_Tests
                     correct.add(0,thingsToAdd.get(x));
                 }
                 String message = "Called addFirst multiples using these values:"+thingsToAdd;
-                System.out.print(toString.invoke(check));
                 int index = (int)(Math.random()*correct.size());
                 Assert.assertEquals(message,correct.remove(index),remove.invoke(check,index));
                 message += ", and then calling remove("+index+")";
